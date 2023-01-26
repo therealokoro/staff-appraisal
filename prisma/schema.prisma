@@ -1,0 +1,63 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRoles {
+  ADMIN
+  STUDENT
+}
+
+model User {
+  id        String    @id @unique @default(cuid())
+  loginID   String    @unique
+  password  String
+  role      UserRoles
+  profile   Profile?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  reviews   Review[]
+}
+
+model Profile {
+  id          String   @id @unique @default(cuid())
+  surname     String
+  firstname   String
+  email       String?  @unique
+  admissionNo String?  @unique
+  level       String?
+  account     User     @relation(fields: [accountId], references: [id])
+  accountId   String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model Course {
+  id         String   @id @unique @default(cuid())
+  title      String   @unique
+  courseCode String   @unique
+  level      String
+  lecturer   String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  reviews    Review[]
+}
+
+model Review {
+  id           String   @id @unique @default(cuid())
+  results      Json
+  course       Course   @relation(fields: [courseId], references: [id])
+  courseId     String
+  student      User     @relation(fields: [studentId], references: [id])
+  studentId    String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  isAnonynmous Boolean  @default(true)
+}

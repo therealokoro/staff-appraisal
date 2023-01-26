@@ -1,0 +1,60 @@
+.formkit {
+  --at-apply: "c-content-200";
+}
+
+.formkit-outer {
+  --at-apply: "w-full space-y-3";
+}
+
+.formkit-wrapper {
+  --at-apply: "space-y-3";
+}
+
+.formkit-label {
+  --at-apply: "text-xs block font-bold";
+}
+
+.formkit-inner {
+  --at-apply: "outline-none";
+}
+
+.formkit-input:not([type="submit"]) {
+  --at-apply: "form-input";
+}
+
+.formkit-input[type="submit"] {
+  --at-apply: "py-2.5 px-6 bg-accent-200 text-sm font-semibold c-white focus:accent-outline rounded";
+}
+
+.formkit-input[type="file"] {
+  --at-apply: "hover:(ring-base-300) p-0 file:(p-3 bg-base-300 border-0 font-semibold mr-4 transition focus:(bg-accent-100 c-white))";
+}
+
+.formkit-help {
+  --at-apply: "text-xs font-medium text-content-100";
+}
+
+.formkit-message {
+  --at-apply: "text-xs font-medium text-red-400";
+}
+
+.formkit-form > .formkit-messages {
+  --at-apply: "mt-6 text-center";
+}
+
+.formkit-form > .formkit-actions {
+  --at-apply: "mt-6 flex-center";
+}
+
+.formkit-actions .formkit-wrapper {
+  --at-apply: "flex-center";
+}
+
+.formkit-file-list,
+.formkit-no-files {
+  --at-apply: "hidden";
+}
+
+[data-invalid] .formkit-input {
+  --at-apply: "ring-0 ring-red-400 bg-red-300/30 dark:bg-red-900/30";
+}

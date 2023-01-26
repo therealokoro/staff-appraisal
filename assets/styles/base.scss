@@ -1,0 +1,16 @@
+@use "./formkit.scss";
+
+:root {
+  --a-primary: 198, 100%, 37%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+}
+
+body {
+  --at-apply: "c-content-200 font-base bg-base-200";
+}
