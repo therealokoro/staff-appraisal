@@ -1,8 +1,10 @@
 <script lang="ts" setup>
   const { fetchSingleCourse } = useCourseStore()
+  const { fetchAllQuestions, getQuestionList } = useQuestionStore()
 
   const { data: course } = useAsyncData(async () => {
     const id = useRoute().params.id.toString()
+    await fetchAllQuestions()
     return await fetchSingleCourse(id)
   })
 
@@ -22,32 +24,19 @@
     "Reviews cannot be edited once submitted"
   ]
 
-  const questions = ref([
-    {
-      id: "1",
-      value: 0,
-      body: "How well do you think the teachers knows the course"
-    },
-    { id: "2", value: 2, body: "God bless PD..APC, God..God bless PD..APC" },
-    {
-      id: "3",
-      value: 3,
-      body: "A townhall different from bala blu, bluhu, bulaba"
-    },
-    {
-      id: "4",
-      value: 4,
-      body: "Buhari....buhari.....buhari...say it again...buhari"
-    }
-  ])
+  const questions = ref(
+    getQuestionList.map((curr) => ({ id: curr.id, body: curr.body, value: 0 }))
+  )
 
   async function handleSubmitReview() {
-    const isNotValid = useArraySome(questions, ({ value }) => value != 0)
+    const isNotValid = useArraySome(questions, ({ value }) => value == 0)
 
     if (isNotValid.value) {
       Alerts.warn("Please pass a value to all review questions")
       return
     }
+
+    console.log(questions.value)
   }
 </script>
 
@@ -103,7 +92,7 @@
           <div
             v-for="item in questions"
             :key="item.id"
-            class="text-0.8rem w-full px-2 flex flex-wrap items-center justify-center md:justify-between"
+            class="text-0.8rem w-full px-2 flex lt-sm:flex-col gap-2 items-center justify-center sm:justify-between"
           >
             <h3 font-semibold c-accent-200>{{ item.body }}</h3>
             <a-rating
