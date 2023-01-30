@@ -51,6 +51,19 @@ export const queryCourseList = async (query: QueryCourseInput) => {
   return await db.course.findMany({ where: { ...query } })
 }
 
+export const queryStudentCourseList = async (
+  studentId: string,
+  query: QueryCourseInput
+) => {
+  const allCourses = await db.course.findMany({ where: { ...query } })
+  const reviewed = await db.review.findMany({ where: { studentId } })
+
+  return allCourses.map((course) => ({
+    ...course,
+    reviewed: reviewed.some((curr) => curr.courseId == course.id)
+  }))
+}
+
 export const fetchCourseByID = async (id: string) => {
   return await db.course.findUnique({ where: { id } })
 }

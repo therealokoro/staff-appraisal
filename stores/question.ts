@@ -41,6 +41,8 @@ export const useQuestionStore = defineStore("QuestionStore", {
     async fetchAllQuestions() {
       const res = await useApi.get<IQuestion[]>("questions")
       if (res.error) return Promise.reject(res.message)
+
+      this.questionList = res.data
       return Promise.resolve(res.data)
     }
   }

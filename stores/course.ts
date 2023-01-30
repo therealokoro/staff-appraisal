@@ -1,5 +1,10 @@
 import { EditCourseInput } from "~~/server/modules/course/course.schema"
-import { ICourse, CourseStoreState, QueryCourseInput } from "~~/types/course"
+import {
+  ICourse,
+  CourseStoreState,
+  QueryCourseInput,
+  IStudentCourseList
+} from "~~/types/course"
 
 export const useCourseStore = defineStore("CourseStore", {
   state: (): CourseStoreState => ({
@@ -37,6 +42,19 @@ export const useCourseStore = defineStore("CourseStore", {
 
     async fetchCourses(query: QueryCourseInput) {
       const res = await useApi.post<ICourse[]>("courses/query", query)
+      if (res.error) return Promise.reject(res.message)
+
+      this.courseList = res.data
+      return Promise.resolve(res.data)
+    },
+
+    async fetchStudentCourses(input: QueryCourseInput) {
+      const user = getAuthUser()
+      const query = useQueryString(input)
+
+      const res = await useApi.get<IStudentCourseList[]>(
+        `courses/student/${user!.id}/${query}`
+      )
       if (res.error) return Promise.reject(res.message)
 
       this.courseList = res.data

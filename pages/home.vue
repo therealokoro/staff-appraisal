@@ -1,13 +1,13 @@
 <script lang="ts" setup>
   const user = getAuthUser()
 
-  const { fetchCourses } = useCourseStore()
+  const { fetchStudentCourses } = useCourseStore()
   const isShowingCourses = ref(false)
 
   async function viewAllCourses() {
     try {
       const user = getAuthUser()
-      await fetchCourses({ level: user!.profile.level as string })
+      await fetchStudentCourses({ level: user!.profile.level as string })
       isShowingCourses.value = true
     } catch (e: any) {
       Alerts.error(e)

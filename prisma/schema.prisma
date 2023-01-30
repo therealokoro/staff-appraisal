@@ -57,9 +57,11 @@ model Review {
   courseId     String
   student      User     @relation(fields: [studentId], references: [id])
   studentId    String
+  isAnonynmous Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  isAnonynmous Boolean  @default(true)
+
+  @@unique([studentId, courseId])
 }
 
 model Question {

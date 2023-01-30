@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-  import { ICourse } from "~~/types/course"
+  import type { IStudentCourseList } from "~~/types/course"
   const { getCourseList } = storeToRefs(useCourseStore())
-  const courseList = computed(() => getCourseList.value || [])
+  const courseList = computed(
+    () => (getCourseList.value as IStudentCourseList[]) || []
+  )
 </script>
 
 <template>
@@ -15,6 +17,8 @@
         v-for="course in courseList"
         :key="course.id"
         class="bg-base-100 p-5 shadow space-y-1 flex items-center justify-between"
+        :class="course.reviewed ? 'opacity-30 cursor-not-allowed' : ''"
+        :title="course.reviewed ? 'You have reviewed this course already' : ''"
       >
         <div class="space-y-1">
           <p class="text-sm font-semibold">
@@ -30,6 +34,7 @@
             icon="i-tabler-pencil"
             @click="navigateTo(`/review/${course.id}`)"
             variant="text"
+            :disabled="course.reviewed"
           >
             Review Course
           </ui-button>

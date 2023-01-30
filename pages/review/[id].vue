@@ -1,10 +1,13 @@
 <script lang="ts" setup>
   const { fetchSingleCourse } = useCourseStore()
-  const { fetchAllQuestions, getQuestionList } = useQuestionStore()
+  const { fetchAllQuestions } = useQuestionStore()
+  const { createNewReview } = useReviewStore()
+  const { getQuestionList } = storeToRefs(useQuestionStore())
+
+  tryOnBeforeMount(async () => await fetchAllQuestions())
 
   const { data: course } = useAsyncData(async () => {
     const id = useRoute().params.id.toString()
-    await fetchAllQuestions()
     return await fetchSingleCourse(id)
   })
 
@@ -24,17 +27,40 @@
     "Reviews cannot be edited once submitted"
   ]
 
-  const questions = ref(
-    getQuestionList.map((curr) => ({ id: curr.id, body: curr.body, value: 0 }))
-  )
+  const questions = ref<{ score: number; id: string; body: string }[]>([])
+  watch(getQuestionList, (list) => {
+    questions.value = list.map((curr) => ({
+      id: curr.id,
+      body: curr.body,
+      score: 0
+    }))
+  })
 
   async function handleSubmitReview() {
-    const isNotValid = useArraySome(questions, ({ value }) => value == 0)
+    const isNotValid = useArraySome(questions, ({ score: value }) => value == 0)
 
     if (isNotValid.value) {
       Alerts.warn("Please pass a value to all review questions")
       return
     }
+
+    useDialogs().showDialog("Are you sure you want to submit this review?", {
+      style: "warning",
+      async onConfirm() {
+        try {
+          const user = getAuthUser()
+          await createNewReview({
+            courseId: course.value!.id,
+            studentId: user!.id,
+            results: [...questions.value]
+          })
+
+          Alerts.success("Review submitted successfully")
+        } catch (e: any) {
+          Alerts.error(e)
+        }
+      }
+    })
 
     console.log(questions.value)
   }
@@ -98,7 +124,7 @@
             <a-rating
               class="text-0.9rem"
               color="c-accent-200"
-              v-model="item.value"
+              v-model="item.score"
               half
             />
           </div>

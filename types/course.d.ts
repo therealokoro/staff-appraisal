@@ -5,6 +5,10 @@ export interface ICourse extends Course {
   reviews: IReview[]
 }
 
+export type IStudentCourseList = ICourse & {
+  reviewed: boolean
+}
+
 export type CourseStoreState = {
   courseList: ICourse[]
 }
