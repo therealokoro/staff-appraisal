@@ -4,15 +4,14 @@
   const { fetchStudentCourses } = useCourseStore()
   const isShowingCourses = ref(false)
 
-  async function viewAllCourses() {
+  const { pending, error } = await useAsyncData(async () => {
     try {
       const user = getAuthUser()
       await fetchStudentCourses({ level: user!.profile.level as string })
-      isShowingCourses.value = true
     } catch (e: any) {
       Alerts.error(e)
     }
-  }
+  })
 </script>
 
 <template>
@@ -21,7 +20,7 @@
       <WelcomeUser :user="user" />
 
       <div class="flex-col-center space-y-2 text-0.9rem">
-        <p class="font-semibold">Search for a lecture or a course to review</p>
+        <!-- <p class="font-semibold">Search for a lecture or a course to review</p>
         <div
           class="w-80vw md:w-md flex items-center bg-base-100 border-gray-200 border-2 px-4 focus-within:border-accent-200"
         >
@@ -35,15 +34,15 @@
 
         <ui-button variant="text" @click="viewAllCourses">
           View All Courses
-        </ui-button>
+        </ui-button> -->
         <a-alert color="info">
           <p class="text-0.8rem text-center">
-            <b>Note:</b> Only courses for your level will be displayed
+            <b>Note:</b> Courses you have reviewed will be disabled!!
           </p>
         </a-alert>
       </div>
 
-      <CourseList v-if="isShowingCourses" />
+      <CourseList />
     </div>
 
     <div v-else class="inset-0 py-10 flex-col-center gap-5">

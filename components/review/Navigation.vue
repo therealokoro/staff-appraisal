@@ -1,7 +1,7 @@
 <script lang="ts" setup>
   const navLinks = [
     { label: "Home", link: "/home" },
-    { label: "My Reviews", link: "/history" },
+    // { label: "My Reviews", link: "/my-reviews" },
     { label: "Settings", link: "/settings" }
   ]
 

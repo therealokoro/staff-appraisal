@@ -30,7 +30,7 @@ export const useReviewStore = defineStore("ReviewStore", {
 
     async queryReviews(input: QueryReviewsInput) {
       const query = useQueryString(input)
-      const res = await useApi.get<IReview[]>(`reviews/${query}`)
+      const res = await useApi.get<IReview[]>(`reviews/query${query}`)
       if (res.error) return Promise.reject(res.message)
 
       this.reviewList = res.data
