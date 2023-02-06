@@ -1,7 +1,7 @@
 import { createFetch } from "@vueuse/core"
 import type { ApiResponse } from "~~/types/app"
 
-export const BaseApi = createFetch({
+const BaseApi = createFetch({
   baseUrl: "/api/",
   options: {
     beforeFetch({ options }) {
