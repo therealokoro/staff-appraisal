@@ -14,7 +14,7 @@ export interface Alert extends AlertOptions {
 import { nanoid } from "nanoid"
 
 export const defaultOptions: AlertOptions = {
-  timeout: 7000,
+  timeout: 5000,
   title: "Info",
   closable: true
 }

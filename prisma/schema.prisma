@@ -15,6 +15,19 @@ enum UserRoles {
   STUDENT
 }
 
+model SchoolInfo {
+  id      String @id @unique @default(cuid())
+  session String
+}
+
+model Session {
+  id        String   @id @unique @default(cuid())
+  name      String   @unique
+  reviews   Review[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model User {
   id        String    @id @unique @default(cuid())
   loginID   String    @unique
@@ -57,6 +70,8 @@ model Review {
   courseId     String
   student      User     @relation(fields: [studentId], references: [id])
   studentId    String
+  session      Session  @relation(fields: [sessionId], references: [id])
+  sessionId    String
   isAnonynmous Boolean  @default(true)
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt

@@ -3,5 +3,7 @@
     <div class="auto-container h-full">
       <slot />
     </div>
+
+    <AppAlerts />
   </div>
 </template>

@@ -39,6 +39,51 @@ async function main() {
     "STUDENT account created successfully with loginID: ",
     STUDENT.loginID
   )
+
+  const SESSIONS = await prisma.session.createMany({
+    data: [
+      {
+        name: "2020/2021"
+      },
+      {
+        name: "2021/2022"
+      },
+      {
+        name: "2022/2023"
+      }
+    ]
+  })
+
+  const CURRENT_SESSION = await prisma.schoolInfo.create({
+    data: { session: "2020/2021" }
+  })
+
+  console.log("Sessions created successfully")
+
+  const COURSES = await prisma.course.createMany({
+    data: [
+      {
+        title: "Introduction to Computer Science",
+        courseCode: "CSC101",
+        lecturer: "Dr. MF Aliyu",
+        level: "100"
+      },
+      {
+        title: "History of Computer Science",
+        courseCode: "CSC102",
+        lecturer: "Dr. Rufai",
+        level: "100"
+      },
+      {
+        title: "Introduction to Programming",
+        courseCode: "CSC204",
+        lecturer: "Dr. Rufai",
+        level: "200"
+      }
+    ]
+  })
+
+  console.log("Courses created successfully")
 }
 
 main()

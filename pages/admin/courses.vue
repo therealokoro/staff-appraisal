@@ -23,9 +23,9 @@
       <p class="text-0.8rem font-medium c-content-100">
         Below is a list of all departmental courses and their lecturers
       </p>
-      <ui-button @click="showModal = true" text-0.8rem
-        >Create New Course</ui-button
-      >
+      <ui-button @click="showModal = true" text-0.8rem>
+        Create New Course
+      </ui-button>
     </div>
 
     <AdminCourseList />

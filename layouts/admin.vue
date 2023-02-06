@@ -8,7 +8,7 @@
       </div>
     </div>
 
-    <Dialogs />
-    <Alerts />
+    <AppDialogs />
+    <AppAlerts />
   </div>
 </template>

@@ -7,8 +7,8 @@
         <slot />
       </div>
 
-      <Dialogs />
-      <Alerts />
+      <AppDialogs />
+      <AppAlerts />
     </div>
   </div>
 </template>
