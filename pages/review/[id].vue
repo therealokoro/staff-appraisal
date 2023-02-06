@@ -6,8 +6,12 @@
 
   tryOnBeforeMount(async () => await fetchAllQuestions())
 
+  const currSession = ref<string | null>("")
+
   const { data: course } = useAsyncData(async () => {
     const id = useRoute().params.id.toString()
+    const res = await useApi.get<string>("sessions/current")
+    currSession.value = res.data
     return await fetchSingleCourse(id)
   })
 
@@ -51,6 +55,7 @@
           const user = getAuthUser()
           await createNewReview({
             courseId: course.value!.id,
+            sessionId: String(currSession.value),
             studentId: user!.id,
             results: [...questions.value]
           })
@@ -61,8 +66,6 @@
         }
       }
     })
-
-    console.log(questions.value)
   }
 </script>
 

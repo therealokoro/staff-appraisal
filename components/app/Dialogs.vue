@@ -31,7 +31,7 @@
       <!-- Action buttons -->
       <div class="flex gap-2">
         <!-- Confirm Button -->
-        <ui-button @click="dialog?.confirm">
+        <ui-button :color="dialog.style" @click="dialog?.confirm">
           {{ dialog.confirmText }}
         </ui-button>
 

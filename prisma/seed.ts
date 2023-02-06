@@ -40,7 +40,7 @@ async function main() {
     STUDENT.loginID
   )
 
-  const SESSIONS = await prisma.session.createMany({
+  await prisma.session.createMany({
     data: [
       {
         name: "2020/2021"
@@ -54,13 +54,14 @@ async function main() {
     ]
   })
 
-  const CURRENT_SESSION = await prisma.schoolInfo.create({
-    data: { session: "2020/2021" }
+  const sessions = await prisma.session.findFirst()
+  await prisma.schoolInfo.create({
+    data: { session: sessions!.id }
   })
 
   console.log("Sessions created successfully")
 
-  const COURSES = await prisma.course.createMany({
+  await prisma.course.createMany({
     data: [
       {
         title: "Introduction to Computer Science",
@@ -84,6 +85,17 @@ async function main() {
   })
 
   console.log("Courses created successfully")
+
+  await prisma.question.createMany({
+    data: [
+      { body: "How old are you" },
+      { body: "Are you a town hall different from bala blu, bulaba" },
+      { body: "why are you laidis sef" },
+      { body: "70yrs old man like you" }
+    ]
+  })
+
+  console.log("Questions created successfully")
 }
 
 main()

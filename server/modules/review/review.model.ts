@@ -8,15 +8,7 @@ export const createNewReview = async (input: CreateReviewInput) => {
   })
 
   if (check) throw new Error("You cannot review this course twice")
-
-  return await db.review.create({
-    data: {
-      courseId: input.courseId,
-      studentId: input.studentId,
-      results: input.results,
-      isAnonynmous: input.isAnonynmous
-    }
-  })
+  return await db.review.create({ data: { ...input } })
 }
 
 export const queryReviews = async (query: QueryReviewsInput) => {
