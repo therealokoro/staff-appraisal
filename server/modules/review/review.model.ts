@@ -4,7 +4,11 @@ import { CreateReviewInput } from "./review.schema"
 
 export const createNewReview = async (input: CreateReviewInput) => {
   const check = await db.review.count({
-    where: { courseId: input.courseId, studentId: input.studentId }
+    where: {
+      courseId: input.courseId,
+      studentId: input.studentId,
+      sessionId: input.sessionId
+    }
   })
 
   if (check) throw new Error("You cannot review this course twice")

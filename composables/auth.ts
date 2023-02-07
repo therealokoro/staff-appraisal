@@ -36,20 +36,21 @@ export const useAuth = () => {
     return Promise.resolve(res.data)
   }
 
-  async function refresh() {
-    if (!authUser.value) {
-      try {
-        const data = await $fetch("/api/auth/refresh", {
-          headers: useRequestHeaders(["cookie"]) as HeadersInit
-        })
-        setUser(data.user)
-      } catch (error) {
-        setCookie(null)
-      }
+  async function callRefreshAuth() {
+    try {
+      const data = await $fetch("/api/auth/refresh", {
+        headers: useRequestHeaders(["cookie"]) as HeadersInit
+      })
+      setUser(data.user)
+    } catch (error) {
+      setCookie(null)
     }
+  }
 
+  async function refresh() {
+    if (!authUser.value) await callRefreshAuth()
     return authUser
   }
 
-  return { signIn, signOut, refresh }
+  return { signIn, signOut, refresh, callRefreshAuth }
 }

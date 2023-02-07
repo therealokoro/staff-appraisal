@@ -64,6 +64,57 @@ export const useFormSchemas = () => {
     }
   ]
 
+  const EditAccountSchema = [
+    {
+      $formkit: "text",
+      name: "surname",
+      label: "Surname",
+      placeholder: "Enter your surname here",
+      validation: "required"
+    },
+    {
+      $formkit: "text",
+      name: "firstname",
+      label: "Firstname",
+      placeholder: "Enter your firstname here",
+      validation: "required"
+    },
+    {
+      $formkit: "number",
+      name: "admissionNo",
+      label: "Admission No.",
+      placeholder: "Enter your admission number here",
+      validation: "required"
+    },
+    {
+      $formkit: "select",
+      name: "level",
+      label: "Level",
+      placeholder: "Select your level address here",
+      validation: "required",
+      options: ["100", "200", "300", "400", "500"]
+    }
+  ]
+
+  const ChangePasswordSchema = [
+    {
+      $formkit: "password",
+      name: "password",
+      label: "Password",
+      placeholder: "Enter your password",
+      validation: "required"
+    },
+    {
+      $formkit: "password",
+      name: "password_confirm",
+      label: "Confirm Password",
+      placeholder: "Re-enter your password to confirm",
+      validation: "required|confirm",
+      validationVisibility: "live",
+      validationLabel: "Password confirmation"
+    }
+  ]
+
   const CourseSchema = [
     {
       $formkit: "text",
@@ -96,5 +147,11 @@ export const useFormSchemas = () => {
     }
   ]
 
-  return { LoginSchema, RegisterSchema, CourseSchema }
+  return {
+    LoginSchema,
+    RegisterSchema,
+    EditAccountSchema,
+    ChangePasswordSchema,
+    CourseSchema
+  }
 }
