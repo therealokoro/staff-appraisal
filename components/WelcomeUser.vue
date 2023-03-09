@@ -2,6 +2,17 @@
   import type { IUser } from "~~/types/auth"
   const props = defineProps<{ user: IUser }>()
   const isStudent = computed(() => props.user.role == "STUDENT")
+
+  const { data: currSession } = await useLazyAsyncData(async () => {
+    const currSessionId = await $fetch("/api/sessions/current")
+
+    const sessions = await $fetch("/api/sessions")
+
+    if (sessions.error) return null
+    else {
+      return sessions.data?.find((curr) => curr.id == currSessionId.data)
+    }
+  })
 </script>
 
 <template>
@@ -12,8 +23,17 @@
     </h1>
     <div class="lt-md:text-0.9rem font-semibold c-content-100">
       <p v-if="user.profile.email">{{ user.profile.email }}</p>
-      <p v-if="isStudent">Admission No.: {{ user.profile.admissionNo }}</p>
-      <p v-if="isStudent">Level: {{ user.profile.level }} Level</p>
+      <p v-if="isStudent">
+        <span class="font-bold">Admission No.: </span>
+        {{ user.profile.admissionNo }}
+      </p>
+      <p v-if="isStudent">
+        <span class="font-bold">Level: </span>{{ user.profile.level }} Level
+      </p>
+      <p v-if="isStudent">
+        <span class="font-bold">Current Session: </span>
+        {{ currSession?.name || "Not Set" }}
+      </p>
     </div>
     <div class="flex-center">
       <AChip variant="fill" color="success" v-if="isStudent">Student</AChip>

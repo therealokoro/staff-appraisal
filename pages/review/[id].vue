@@ -49,7 +49,7 @@
     }
 
     useDialogs().showDialog("Are you sure you want to submit this review?", {
-      style: "warning",
+      style: "primary",
       async onConfirm() {
         try {
           const user = getAuthUser()
@@ -61,6 +61,7 @@
           })
 
           Alerts.success("Review submitted successfully")
+          return navigateTo("/home")
         } catch (e: any) {
           Alerts.error(e)
         }

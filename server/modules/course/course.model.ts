@@ -56,7 +56,14 @@ export const queryStudentCourseList = async (
   query: QueryCourseInput
 ) => {
   const allCourses = await db.course.findMany({ where: { ...query } })
-  const reviewed = await db.review.findMany({ where: { studentId } })
+
+  const currSessionID = await db.schoolInfo.findFirst()
+
+  const sessionQuery = currSessionID ? { sessionId: currSessionID.session } : {}
+
+  const reviewed = await db.review.findMany({
+    where: { ...sessionQuery, studentId }
+  })
 
   return allCourses.map((course) => ({
     ...course,

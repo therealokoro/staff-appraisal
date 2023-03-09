@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  definePageMeta({ layout: "global" })
+  definePageMeta({ layout: "global", middleware: "auth" })
 
   const { LoginSchema, RegisterSchema } = useFormSchemas()
   const { createNewUser } = useAuthStore()
@@ -20,7 +20,7 @@
     try {
       if (formType.value == "REGISTER") {
         await createNewUser(data)
-        await navigateTo("/home")
+        Alerts.success("Account created successfully, Please proceed to login")
       } else {
         const user = await signIn(data)
         const path = user?.role == "STUDENT" ? "/home" : "/admin"

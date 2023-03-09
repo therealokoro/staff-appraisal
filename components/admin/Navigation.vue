@@ -3,8 +3,8 @@
     { label: "Home", link: "/admin" },
     { label: "Reviews", link: "/admin/reviews" },
     { label: "Courses", link: "/admin/courses" },
-    { label: "Questions", link: "/admin/questions" },
-    { label: "Settings", link: "/admin/settings" }
+    { label: "Questions", link: "/admin/questions" }
+    // { label: "Settings", link: "/admin/settings" }
   ]
 
   async function handleSignOut() {

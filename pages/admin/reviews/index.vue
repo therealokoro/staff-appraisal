@@ -1,12 +1,39 @@
 <script lang="ts" setup>
-  const { queryReviews } = useReviewStore()
-  const user = getAuthUser()
+  import { CourseResult, SafeIReview } from "~~/composables/review"
+  import { IReview } from "~~/types/review"
 
-  const { data: reviews, pending } = await useAsyncData(async () => {
+  const user = getAuthUser()
+  const { queryReviews } = useReviewStore()
+  const currentSession = ref("")
+
+  const { data: sessions } = await useLazyAsyncData(async () => {
+    const currSession = await $fetch("/api/sessions/current")
+    currentSession.value! != currSession?.data
+    const res = await $fetch("/api/sessions")
+    return res.data
+  })
+
+  const renderResults = ref<CourseResult[]>([])
+  const noReviewMsg = ref("")
+
+  const { data: allReviews } = await useAsyncData(async () => {
     try {
       return await queryReviews({})
     } catch (e: any) {
       Alerts.error(e.message)
+    }
+  })
+
+  watch(currentSession, async (session) => {
+    if (allReviews.value) {
+      const filtered = allReviews.value?.filter(
+        (review) => review.sessionId == session
+      )
+
+      if (!filtered.length)
+        noReviewMsg.value = "There are no reviews for this session"
+
+      renderResults.value = useeReviewCalculator(filtered as SafeIReview[])
     }
   })
 </script>
@@ -16,8 +43,55 @@
     <div class="w-full flex-col-center gap-10" v-if="user">
       <WelcomeUser :user="user" />
 
-      <div class="w-full" v-if="pending">
-        {{ reviews }}
+      <div class="w-full flex-col-center gap-3">
+        <h2 class="text-md font-semibold">
+          Select Session to view review results
+        </h2>
+        <div class="w-1/2 flex-center flex-wrap gap-3" v-if="sessions">
+          <ui-button
+            :variant="currentSession == session.id ? 'fill' : 'outline'"
+            class="text-md"
+            v-for="session in sessions"
+            :key="session.id"
+            @click="currentSession = session.id"
+          >
+            {{ session.name }}
+          </ui-button>
+        </div>
+      </div>
+
+      <div
+        class="w-full"
+        grid="~ cols-1 md:cols-2 gap-5"
+        v-if="renderResults.length"
+      >
+        <div
+          class="bg-base-100 p-5 shadow space-y-1 flex items-center justify-between"
+          v-for="result in renderResults"
+        >
+          <div class="flex-1 space-y-2">
+            <p class="text-sm font-semibold">
+              ({{ result.course.courseCode }}) -
+              <b>{{ result.course.level }} LEVEL</b>
+            </p>
+            <p class="text-0.9rem font-bold">{{ result.course.title }}</p>
+            <p class="text-sm font-semibold c-accent-200">
+              {{ result.course.lecturer }}
+            </p>
+          </div>
+
+          <div class="flex-col-center gap-2">
+            <p text-sm font-semibold>Total Score</p>
+            <span c-accent-200 text-2xl font-bold>{{ result.totalScore }}</span>
+            <p text-sm font-semibold>Reviews: {{ result.reviewCount }}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-fill" v-else>
+        <h2 class="text-md font-semibold">
+          {{ noReviewMsg }}
+        </h2>
       </div>
     </div>
   </Page>
