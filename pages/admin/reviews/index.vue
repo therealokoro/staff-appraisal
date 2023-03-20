@@ -1,10 +1,17 @@
 <script lang="ts" setup>
-  import { CourseResult, SafeIReview } from "~~/composables/review"
-  import { IReview } from "~~/types/review"
+  import type {
+    CourseResult,
+    SafeIReview,
+    ICourseResultDetail
+  } from "~~/composables/review"
 
   const user = getAuthUser()
   const { queryReviews } = useReviewStore()
   const currentSession = ref("")
+  const [detailsModal, toggleDetailsModal] = useToggle()
+  const currentDetails = ref<
+    { question: string; "Total Score": number }[] | null
+  >(null)
 
   const { data: sessions } = await useLazyAsyncData(async () => {
     const currSession = await $fetch("/api/sessions/current")
@@ -36,6 +43,14 @@
       renderResults.value = useeReviewCalculator(filtered as SafeIReview[])
     }
   })
+
+  function showReviewDetails(details: ICourseResultDetail[]) {
+    currentDetails.value = details.map((curr) => ({
+      question: curr.body,
+      "Total Score": curr.totalScore
+    }))
+    toggleDetailsModal()
+  }
 </script>
 
 <template>
@@ -68,6 +83,7 @@
         <div
           class="bg-base-100 p-5 shadow space-y-1 flex items-center justify-between"
           v-for="result in renderResults"
+          @click=""
         >
           <div class="flex-1 space-y-2">
             <p class="text-sm font-semibold">
@@ -78,6 +94,13 @@
             <p class="text-sm font-semibold c-accent-200">
               {{ result.course.lecturer }}
             </p>
+            <ui-button
+              @click="showReviewDetails(result.details)"
+              class="text-xs"
+              variant="light"
+            >
+              View Details
+            </ui-button>
           </div>
 
           <div class="flex-col-center gap-2">
@@ -93,6 +116,18 @@
           {{ noReviewMsg }}
         </h2>
       </div>
+
+      <UiModal v-model="detailsModal" title="Review Details" width="w-50vw">
+        <div class="w-full" v-if="currentDetails">
+          <h3 mb-5 font-semibold>
+            Below shows the total value scored for each question
+          </h3>
+          <ATable
+            :rows="currentDetails"
+            class="shadow-none text-lg font-bold"
+          />
+        </div>
+      </UiModal>
     </div>
   </Page>
 </template>
