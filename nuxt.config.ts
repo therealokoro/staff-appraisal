@@ -10,5 +10,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     cookieName: "session",
     cookieSecret: "supersecret"
-  }
+  },
+  nitro: { preset: "vercel" }
 })
