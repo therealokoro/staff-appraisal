@@ -9,8 +9,8 @@ async function main() {
       role: "ADMIN",
       profile: {
         create: {
-          surname: "Joseph",
-          firstname: "Mathew",
+          surname: "Departmental",
+          firstname: "Admin",
           email: "admin@gmail.com"
         }
       }
