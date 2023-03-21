@@ -61,37 +61,37 @@ async function main() {
 
   console.log("Sessions created successfully")
 
-  await prisma.course.createMany({
-    data: [
-      {
-        title: "Introduction to Computer Science",
-        courseCode: "CSC101",
-        lecturer: "Dr. MF Aliyu",
-        level: "100"
-      },
-      {
-        title: "History of Computer Science",
-        courseCode: "CSC102",
-        lecturer: "Dr. Rufai",
-        level: "100"
-      },
-      {
-        title: "Introduction to Programming",
-        courseCode: "CSC204",
-        lecturer: "Dr. Rufai",
-        level: "200"
-      }
-    ]
-  })
+  // await prisma.course.createMany({
+  //   data: [
+  //     {
+  //       title: "Introduction to Computer Science",
+  //       courseCode: "CSC101",
 
-  console.log("Courses created successfully")
+  //       level: "100"
+  //     },
+  //     {
+  //       title: "History of Computer Science",
+  //       courseCode: "CSC102",
+
+  //       level: "100"
+  //     },
+  //     {
+  //       title: "Introduction to Programming",
+  //       courseCode: "CSC204",
+
+  //       level: "200"
+  //     }
+  //   ]
+  // })
+
+  // console.log("Courses created successfully")
 
   await prisma.question.createMany({
     data: [
-      { body: "How old are you" },
-      { body: "Are you a town hall different from bala blu, bulaba" },
-      { body: "why are you laidis sef" },
-      { body: "70yrs old man like you" }
+      { body: "Punctuality" },
+      { body: "Knowledge of Course" },
+      { body: "Friendliness" },
+      { body: "Decency" }
     ]
   })
 

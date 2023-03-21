@@ -19,7 +19,7 @@
     return {
       Title: course.value?.title,
       "Course Code": course.value?.courseCode,
-      Lecturer: course.value?.lecturer,
+      Lecturer: `${course.value?.lecturer.title} ${course.value?.lecturer.surname} ${course.value?.lecturer.firstname}`,
       Level: `${course.value?.level} LEVEL`
     }
   })

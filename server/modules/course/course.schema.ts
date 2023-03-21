@@ -3,7 +3,7 @@ import { z } from "zod"
 export const CreateCourseSchema = z.object({
   title: z.string({ required_error: "title is required" }),
   courseCode: z.string({ required_error: "courseCode is required" }),
-  lecturer: z.string({ required_error: "lecturer is required" }),
+  lecturerId: z.string({ required_error: "lecturerId is required" }),
   level: z.enum(["100", "200", "300", "400", "500"], {
     required_error: "level is required"
   })

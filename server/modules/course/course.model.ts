@@ -16,7 +16,7 @@ export const createCourse = async (input: CreateCourseInput) => {
     data: {
       title: sentenceCase(input.title),
       courseCode: input.courseCode.toUpperCase(),
-      lecturer: capitalCase(input.lecturer),
+      lecturerId: input.lecturerId,
       level: input.level
     }
   })
@@ -37,9 +37,10 @@ export const editCourse = async (id: string, input: EditCourseInput) => {
     data: {
       title: input.title && sentenceCase(input.title),
       courseCode: input.courseCode && input.courseCode.toUpperCase(),
-      lecturer: input.lecturer && capitalCase(input.lecturer),
+      lecturerId: input.lecturerId,
       level: input.level
-    }
+    },
+    include: { lecturer: true }
   })
 }
 
@@ -48,14 +49,20 @@ export const deleteCourse = async (id: string) => {
 }
 
 export const queryCourseList = async (query: QueryCourseInput) => {
-  return await db.course.findMany({ where: { ...query } })
+  return await db.course.findMany({
+    where: { ...query },
+    include: { lecturer: true }
+  })
 }
 
 export const queryStudentCourseList = async (
   studentId: string,
   query: QueryCourseInput
 ) => {
-  const allCourses = await db.course.findMany({ where: { ...query } })
+  const allCourses = await db.course.findMany({
+    where: { ...query },
+    include: { lecturer: true }
+  })
 
   const currSessionID = await db.schoolInfo.findFirst()
 
@@ -72,5 +79,8 @@ export const queryStudentCourseList = async (
 }
 
 export const fetchCourseByID = async (id: string) => {
-  return await db.course.findUnique({ where: { id } })
+  return await db.course.findUnique({
+    where: { id },
+    include: { lecturer: true }
+  })
 }

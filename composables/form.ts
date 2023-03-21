@@ -96,6 +96,31 @@ export const useFormSchemas = () => {
     }
   ]
 
+  const CreateLecturerSchema = [
+    {
+      $formkit: "select",
+      name: "title",
+      label: "Title",
+      placeholder: "Select lecturer's title",
+      validation: "required",
+      options: ["Mr.", "Mrs.", "Dr,", "Prof.", "Mal."]
+    },
+    {
+      $formkit: "text",
+      name: "surname",
+      label: "Surname",
+      placeholder: "Enter lecturer's surname here",
+      validation: "required"
+    },
+    {
+      $formkit: "text",
+      name: "firstname",
+      label: "Firstname",
+      placeholder: "Enter lecturer's firstname here",
+      validation: "required"
+    }
+  ]
+
   const ChangePasswordSchema = [
     {
       $formkit: "password",
@@ -131,25 +156,25 @@ export const useFormSchemas = () => {
       validation: "required"
     },
     {
-      $formkit: "text",
-      name: "lecturer",
-      label: "Lecturer",
-      placeholder: "Enter the course lecturer's name here",
-      validation: "required"
-    },
-    {
       $formkit: "select",
       name: "level",
       label: "Level",
       placeholder: "Select your level address here",
       validation: "required",
-      options: ["100", "200", "300", "400", "500"]
+      options: [
+        { label: "100", value: "100" },
+        { label: "200", value: "200" },
+        { label: "300", value: "300" },
+        { label: "400", value: "400" },
+        { label: "500", value: "500" }
+      ]
     }
   ]
 
   return {
     LoginSchema,
     RegisterSchema,
+    CreateLecturerSchema,
     EditAccountSchema,
     ChangePasswordSchema,
     CourseSchema

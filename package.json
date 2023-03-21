@@ -8,7 +8,7 @@
     "postinstall": "nuxi prepare && npm run db:push && npm run db:generate && npm run db:seed",
     "db:migrate:deploy": "prisma migrate deploy",
     "db:migrate:dev": "prisma migrate dev",
-    "db:push": "prisma db push",
+    "db:push": "prisma db push --force-reset",
     "db:generate": "prisma generate",
     "db:studio": "prisma studio",
     "db:seed": "prisma db seed"

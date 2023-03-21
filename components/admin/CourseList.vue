@@ -3,12 +3,32 @@
 
   const { getCourseList } = storeToRefs(useCourseStore())
   const { deleteCourse, editCourseInfo } = useCourseStore()
+  const { fetchLecturers, getLecturerList } = useLecturerStore()
+
+  tryOnBeforeMount(async () => {
+    await fetchLecturers({})
+  })
 
   const courseList = computed(() => getCourseList.value || [])
   const editModal = ref(false)
 
   const { CourseSchema } = useFormSchemas()
   const currentCourse = ref<ICourse | null>(null)
+
+  const formSchema = [
+    ...CourseSchema,
+    {
+      $formkit: "select",
+      name: "lecturerId",
+      label: "Lecturer",
+      placeholder: "Select a lecturer for course",
+      validation: "required",
+      options: getLecturerList.map((curr) => ({
+        label: `${curr.title} ${curr.surname} ${curr.firstname}`,
+        value: curr.id
+      }))
+    }
+  ]
 
   function initEditCourse(course: ICourse) {
     currentCourse.value = course
@@ -56,7 +76,13 @@
           </p>
           <p class="text-0.9rem font-bold">{{ course.title }}</p>
           <p class="text-sm font-semibold c-accent-200">
-            {{ course.lecturer }}
+            {{
+              course.lecturer?.title +
+              " " +
+              course.lecturer?.surname +
+              " " +
+              course.lecturer?.firstname
+            }}
           </p>
         </div>
 
@@ -85,7 +111,7 @@
     <UiModal v-model="editModal" title="Edit Course Info">
       <FormKit :value="currentCourse" type="form" @submit="handleEditCourse">
         <div class="w-full space-y-4">
-          <FormKitSchema :schema="CourseSchema" />
+          <FormKitSchema :schema="formSchema" />
         </div>
       </FormKit>
     </UiModal>

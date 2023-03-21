@@ -2,8 +2,27 @@
   const showModal = ref(false)
   const { CourseSchema } = useFormSchemas()
   const { createNewCourse, fetchCourses } = useCourseStore()
+  const { fetchLecturers, getLecturerList } = useLecturerStore()
 
-  tryOnBeforeMount(async () => await fetchCourses({}))
+  tryOnBeforeMount(async () => {
+    await fetchCourses({})
+    await fetchLecturers({})
+  })
+
+  const formSchema = [
+    ...CourseSchema,
+    {
+      $formkit: "select",
+      name: "lecturerId",
+      label: "Lecturer",
+      placeholder: "Select a lecturer for course",
+      validation: "required",
+      options: getLecturerList.map((curr) => ({
+        label: `${curr.title} ${curr.surname} ${curr.firstname}`,
+        value: curr.id
+      }))
+    }
+  ]
 
   async function handleCreateCourse(data: any) {
     try {
@@ -33,7 +52,7 @@
     <UiModal v-model="showModal" title="Create Course">
       <FormKit type="form" @submit="handleCreateCourse">
         <div class="w-full space-y-4">
-          <FormKitSchema :schema="CourseSchema" />
+          <FormKitSchema :schema="formSchema" />
         </div>
       </FormKit>
     </UiModal>

@@ -20,6 +20,16 @@ model SchoolInfo {
   session String
 }
 
+model Lecturer {
+  id        String   @id @unique @default(cuid())
+  title     String
+  surname   String
+  firstname String
+  courses   Course[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Session {
   id        String   @id @unique @default(cuid())
   name      String   @unique
@@ -57,10 +67,11 @@ model Course {
   title      String   @unique
   courseCode String   @unique
   level      String
-  lecturer   String
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   reviews    Review[]
+  lecturer   Lecturer @relation(fields: [lecturerId], references: [id])
+  lecturerId String
 }
 
 model Review {

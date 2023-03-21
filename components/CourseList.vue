@@ -26,7 +26,13 @@
           </p>
           <p class="text-0.9rem font-bold">{{ course.title }}</p>
           <p class="text-sm font-semibold c-accent-200">
-            {{ course.lecturer }}
+            {{
+              course.lecturer?.title +
+              " " +
+              course.lecturer?.surname +
+              " " +
+              course.lecturer?.firstname
+            }}
           </p>
         </div>
         <div class="flex items-center gap-2 text-sm">
